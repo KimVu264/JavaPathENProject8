@@ -23,11 +23,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -53,10 +51,7 @@ public class TestPerformance {
      *          assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
      */
     static final Logger logger = LogManager.getLogger("TestPerformance");
-    /**
-     * Create ThreadPool of 100
-     */
-    ExecutorService executor = Executors.newFixedThreadPool(100);
+
     @Autowired
     InternalTestingData internalTestingData;
     @Autowired
@@ -78,32 +73,21 @@ public class TestPerformance {
         rewardsService = new RewardsService(gpsUtil, new RewardCentral());
         internalTestingData = new InternalTestingData();
         // Users should be incremented up to 100,000, and test finishes within 15 minutes
-        InternalTestHelper.setInternalUserNumber(1000);
+        InternalTestHelper.setInternalUserNumber(100000);
         tourGuideService = new TourGuideService(gpsUtil, rewardsService, rewardCentral, internalTestingData);
-
     }
 
     @Test
     public void highVolumeTrackLocation() {
 
-        List<User> allUserDtos = tourGuideService.getAllUsers();
-
-        // Create a list of future
-        List<CompletableFuture> completableFutures = new ArrayList<>();
-
-        StopWatch stopWatch = new StopWatch();
+        List<User> allUsers = tourGuideService.getAllUsers();
         stopWatch.start();
+        List<CompletableFuture<?>> tasksFuture = new ArrayList<>();
+        allUsers.forEach(u -> tasksFuture.add(tourGuideService.trackUserLocation(u.getUserId())));
+        tasksFuture.forEach(CompletableFuture::join);
 
-        for (User userDto : allUserDtos) {
-            CompletableFuture<Void> allFutures = CompletableFuture.runAsync(() -> {
-                tourGuideService.trackUserLocation(userDto);
-            });
-            completableFutures.add(allFutures);
-        }
-
-        // Create a combined Future using allOf() and method join() to return the results
-        CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[completableFutures.size()])).join();
-
+        assertTrue(allUsers.get(0).getVisitedLocations().size()>1);
+        assertEquals(100000, allUsers.size());
         stopWatch.stop();
 
         System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
@@ -112,20 +96,17 @@ public class TestPerformance {
 
     @Test
     public void highVolumeGetRewards() {
-
         Attraction attraction = gpsUtil.getAttractions().get(0);
         List<User> allUsers;
-        List<CompletableFuture> completableFutures = new ArrayList<>();
         allUsers = tourGuideService.getAllUsers();
         allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 
         stopWatch.start();
-        allUsers.forEach(u -> {completableFutures.add(rewardsService.calculateRewards(u));});
 
-        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[completableFutures.size()]));
-        completableFuture.join();
-
+        CompletableFuture<?>[] completableFutures = allUsers.parallelStream().map(rewardsService::calculateRewards).toArray(CompletableFuture[]::new);
+        CompletableFuture.allOf(completableFutures).join();
         for (User userDto : allUsers) {
+            assertNotEquals(0, userDto.getUserRewards().get(0).getRewardPoints());
             assertTrue(userDto.getUserRewards().size() > 0);
         }
 

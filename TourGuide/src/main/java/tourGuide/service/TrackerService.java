@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -48,7 +49,11 @@ public class TrackerService extends Thread {
 			List<User> users = tourGuideService.getAllUsers();
 			logger.debug("Begin Tracker. Tracking " + users.size() + " users.");
 			stopWatch.start();
-			CompletableFuture.runAsync(() -> users.forEach(tourGuideService::trackUserLocation), executorService).join();
+			List<CompletableFuture<?>> trackResult = users.stream()
+					.map(userDto -> CompletableFuture.runAsync(() -> tourGuideService.getUserLocation(userDto.getUserId()), executorService))
+					.collect(Collectors.toList( ));
+			trackResult.forEach(CompletableFuture::join);
+			//CompletableFuture.runAsync(() -> users.forEach(tourGuideService::trackUserLocation), executorService).join();
 			//users.forEach(u -> tourGuideService.trackUserLocation(u));
 			stopWatch.stop();
 			logger.debug("Tracker Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");

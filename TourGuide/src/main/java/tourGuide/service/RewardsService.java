@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,7 +29,7 @@ public class RewardsService {
     private final GpsUtil gpsUtil;
     @Autowired
     private final RewardCentral rewardsCentral;
-    public ExecutorService service = Executors.newFixedThreadPool(100);
+    public ExecutorService service = Executors.newFixedThreadPool(200);
     private Logger logger = LoggerFactory.getLogger(RewardsService.class);
     // proximity in miles
     private int defaultProximityBuffer = 10;
@@ -75,7 +76,34 @@ public class RewardsService {
         }, service);
     }
     */
-    
+    public CompletableFuture<List<UserReward>> calculateRewards(User user) {
+        List<Attraction> attractions = gpsUtil.getAttractions();
+        List<VisitedLocation> userLocations = user.getVisitedLocations();
+        List<VisitedLocation> locations = new CopyOnWriteArrayList<>(userLocations);
+
+        return CompletableFuture.supplyAsync(() -> {
+            locations.forEach(visitedLocation ->
+                    attractions
+                            .forEach(attraction -> {
+                                if (user.getUserRewards()
+                                        .stream()
+                                        .noneMatch(r -> r.attraction
+                                                .attractionName
+                                                .equals(attraction.attractionName))
+                                        && nearAttraction(visitedLocation.location, attraction)) {
+                                    UserReward userReward = new UserReward(visitedLocation,
+                                            attraction, getRewardPoints(attraction.attractionId, user.getUserId()));
+
+
+                                    user.getUserRewards().add(userReward);
+                                }
+                            }));
+            return user.getUserRewards();
+        }, service);
+
+    }
+    /*
+
     public CompletableFuture<List<UserReward>> calculateRewards(User user) {
         List<Attraction> attractions = gpsUtil.getAttractions();
         List<VisitedLocation> userLocations = user.getVisitedLocations();
@@ -102,6 +130,8 @@ public class RewardsService {
         }, service);
 
     }
+
+     */
 
     public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
         return !(getDistance(attraction, location) > attractionProximityRange);
