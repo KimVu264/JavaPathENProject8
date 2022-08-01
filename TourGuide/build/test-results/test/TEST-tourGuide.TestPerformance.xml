@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tourGuide.TestPerformance" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-07-28T12:02:46" hostname="IDEAPAD-S530" time="12.02">
+  <properties/>
+  <testcase name="highVolumeGetRewards" classname="tourGuide.TestPerformance" time="12.02">
+    <failure message="java.util.concurrent.CompletionException: java.util.ConcurrentModificationException" type="java.util.concurrent.CompletionException">java.util.concurrent.CompletionException: java.util.ConcurrentModificationException
+	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:273)
+	at java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:280)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1606)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.util.ConcurrentModificationException
+	at java.util.ArrayList.forEach(ArrayList.java:1262)
+	at tourGuide.service.RewardsService.lambda$calculateRewards$3(RewardsService.java:82)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1604)
+	... 3 more
+</failure>
+  </testcase>
+  <system-out><![CDATA[14:02:46.774 [Test worker] INFO tourGuide.service.TourGuideService - TestMode enabled
+14:02:46.811 [Test worker] DEBUG tourGuide.service.TourGuideService - Initializing users
+14:02:47.255 [Test worker] DEBUG tourGuide.helper.InternalTestingData - Created 1000 internal test users.
+14:02:47.255 [Test worker] DEBUG tourGuide.service.TourGuideService - Finished initializing users
+14:02:47.263 [pool-4-thread-1] DEBUG tourGuide.service.TrackerService - Begin Tracker. Tracking 1000 users.
+]]></system-out>
+  <system-err><![CDATA[Jul 28, 2022 2:02:47 PM org.javamoney.moneta.DefaultMonetaryContextFactory createMonetaryContextNonNullConfig
+INFO: Using custom MathContext: precision=256, roundingMode=HALF_EVEN
+]]></system-err>
+</testsuite>
