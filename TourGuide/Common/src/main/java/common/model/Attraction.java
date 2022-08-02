@@ -21,6 +21,13 @@ public class Attraction extends Location {
         this.attractionId   = attractionId;
     }
 
+    public Attraction(String attractionName, String city, String state, UUID attractionId) {
+        this.attractionName = attractionName;
+        this.city = city;
+        this.state = state;
+        this.attractionId = attractionId;
+    }
+
     public String getAttractionName() {
 
         return attractionName;

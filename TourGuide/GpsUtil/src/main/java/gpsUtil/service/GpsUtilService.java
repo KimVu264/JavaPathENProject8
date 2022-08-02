@@ -5,6 +5,7 @@ import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,11 @@ import java.util.UUID;
 public class GpsUtilService {
 
     private final Logger logger = LoggerFactory.getLogger("GpsUtilServiceLog");
-    private final GpsUtil gpsUtil = new GpsUtil();
+    private final GpsUtil gpsUtil;
+
+    @Autowired
+    public GpsUtilService() {this.gpsUtil = new GpsUtil();}
+
 
     /**
      * getUserLocation to Get the user location

@@ -36,9 +36,9 @@ public class TourGuideController {
     }
 
     @RequestMapping("/getLocation")
-    public String getLocation(@RequestParam UUID userId) {
-        logger.debug("get location request");
-        return JsonStream.serialize(tourGuideService.getUserLocation(userId));
+    public VisitedLocation getLocation(@RequestParam UUID userId) {
+        logger.info("Get user locations with userId: {}", userId);
+        return tourGuideService.getUserLocation(userId);
     }
 
     /**

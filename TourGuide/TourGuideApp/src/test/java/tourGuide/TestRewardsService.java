@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.helper.InternalTestingData;
 import tourGuide.proxy.GpsUtilProxy;
@@ -27,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ActiveProfiles("Test")
 @SpringBootTest
 public class TestRewardsService {
 

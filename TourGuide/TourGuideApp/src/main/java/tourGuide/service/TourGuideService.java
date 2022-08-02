@@ -4,7 +4,6 @@ import common.dto.NearByAttractionsDto;
 import common.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tourGuide.helper.InternalTestingData;
 import tourGuide.proxy.GpsUtilProxy;
@@ -30,7 +29,7 @@ public class TourGuideService {
     public InternalTestingData internalTestingData;
     public final TrackerService trackerService;
 
-    public ExecutorService service = Executors.newFixedThreadPool(100);
+    public ExecutorService service = Executors.newFixedThreadPool(200);
 
     public TourGuideService(UserService userService, GpsUtilProxy gpsUtilProxy, RewardCentralProxy rewardCentralProxy, TripPricerProxy tripPricerProxy, InternalTestingData internalTestingData) {
         this.userService = userService;
@@ -39,8 +38,8 @@ public class TourGuideService {
         this.tripPricerProxy = tripPricerProxy;
         this.internalTestingData = internalTestingData;
 
-        //logger.info("TestMode enabled");
-        //logger.debug("Initializing users", userService.getAllUsers().size());
+        logger.info("TestMode enabled");
+        logger.debug("Initializing users", userService.getAllUsers().size());
         internalTestingData.initializeInternalUsers();
         logger.debug("Finished initializing users");
 
@@ -54,16 +53,15 @@ public class TourGuideService {
     }
 
     public VisitedLocation getUserLocation(UUID userId) {
-        //logger.info(" Search for user visited location");
         return gpsUtilProxy.getUserLocation(userId);
     }
 
     public User getUser(String userName) {
-        return internalTestingData.internalUserMap.get(userName);
+        return userService.getUser(userName);
     }
 
-    public List<User> getAllUsers() {
-        return new ArrayList<>(internalTestingData.internalUserMap.values());
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
     }
 
     public List<Provider> getTripDeals(User user) {

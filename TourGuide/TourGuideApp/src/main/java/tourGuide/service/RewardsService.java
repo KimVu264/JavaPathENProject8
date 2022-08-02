@@ -21,18 +21,19 @@ public class RewardsService {
 
     private final GpsUtilProxy gpsUtilProxy;
 
-    private final RewardCentralProxy rewardsCentralProxy;
+    private final RewardCentralProxy rewardCentralProxy;
 
     public ExecutorService service = Executors.newFixedThreadPool(200);
     private Logger logger = LoggerFactory.getLogger(RewardsService.class);
+
     // proximity in miles
     private int defaultProximityBuffer = 10;
     private int proximityBuffer = defaultProximityBuffer;
     private int attractionProximityRange = 200;
 
-    public RewardsService(GpsUtilProxy gpsUtilProxy, RewardCentralProxy rewardsCentralProxy) {
+    public RewardsService(GpsUtilProxy gpsUtilProxy, RewardCentralProxy rewardCentralProxy) {
         this.gpsUtilProxy = gpsUtilProxy;
-        this.rewardsCentralProxy = rewardsCentralProxy;
+        this.rewardCentralProxy = rewardCentralProxy ;
     }
 
     public void setProximityBuffer(int proximityBuffer) {
@@ -104,7 +105,7 @@ public class RewardsService {
     }
 
     private int getRewardPoints(UUID attractionId, UUID userId) {
-        return rewardsCentralProxy.getAttractionRewardPoints(attractionId, userId);
+        return rewardCentralProxy.getAttractionRewardPoints(attractionId, userId);
     }
 
     public double getDistance(Location loc1, Location loc2) {

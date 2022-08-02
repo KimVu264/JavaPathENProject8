@@ -1,8 +1,10 @@
 package tourGuide.controller;
 
-import common.dto.UserPreferencesDto;
+import common.dto.UserDto;
+import common.model.Provider;
 import common.model.User;
 import common.model.UserPreferences;
+import tourGuide.exception.UserExisted;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import java.util.List;
 public class UserController {
 
     private Logger logger = LoggerFactory.getLogger(TourGuideController.class);
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @RequestMapping("/allUsers")
+    @Autowired
+    public UserController(UserService userService) {this.userService = userService;}
+
+    @GetMapping("/allUsers")
     private List<User> getAllUsers() {
         logger.info("Search list of all users");
         return userService.getAllUsers();
@@ -34,8 +38,14 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public void addUser(@RequestBody User user){
-        logger.info("Call gpsUtil.service for add user: {}", user);
-        userService.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody UserDto userDto) throws UserExisted {
+        logger.debug("Add user:{} request ",userDto.getUserName());
+        userService.addUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("user saved successfully !!");
+    }
+
+    @PostMapping("/tripDeals")
+    public void updateTripDeals(@RequestParam String userName, @RequestBody List<Provider> tripDeals){
+        userService.updateTripDeals(userName, tripDeals);
     }
 }
