@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.helper.InternalTestingData;
-import tourGuide.proxy.GpsUtilProxy;
 import tourGuide.proxy.RewardCentralProxy;
 import tourGuide.proxy.TripPricerProxy;
+import tourGuide.repository.GpsRepository;
+import tourGuide.repository.UserRepository;
+import tourGuide.service.GpsUtilService;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 import tourGuide.service.UserService;
@@ -55,27 +57,27 @@ public class TestPerformance {
     @Autowired
     InternalTestingData internalTestingData;
     @Autowired
-    private GpsUtilProxy gpsUtilProxy;
+    private GpsUtilService gpsUtilService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RewardCentralProxy rewardCentralProxy;
     @Autowired
     private TripPricerProxy tripPricerProxy;
     @Autowired
     private RewardsService rewardsService;
     @Autowired
     private TourGuideService tourGuideService;
+    @Autowired
+    private UserRepository userRepository;
     private StopWatch stopWatch;
 
     @BeforeEach
     public void setUp() {
         Locale.setDefault(new Locale.Builder().setLanguage("en").setRegion("US").build());
         stopWatch = new StopWatch();
-        internalTestingData = new InternalTestingData();
+        internalTestingData = new InternalTestingData(userRepository);
         // Users should be incremented up to 100,000, and test finishes within 15 minutes
         InternalTestHelper.setInternalUserNumber(100000);
-        tourGuideService = new TourGuideService(userService, gpsUtilProxy, rewardCentralProxy, tripPricerProxy, internalTestingData);
+        tourGuideService = new TourGuideService(rewardsService,userService, gpsUtilService, tripPricerProxy, internalTestingData);
     }
 
     @Test
@@ -101,7 +103,7 @@ public class TestPerformance {
     @Test
     public void highVolumeGetRewards() {
 
-        Attraction attraction = gpsUtilProxy.getAttractions().get(0);
+        Attraction attraction = gpsUtilService.getAttractions().get(0);
         List<User> allUsers;
         allUsers = tourGuideService.getAllUsers();
         allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
@@ -118,7 +120,7 @@ public class TestPerformance {
 
         stopWatch.stop();
 
-        logger.info("highVolumeGetRewards / Time Elapsed: {} seconds." + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
+        logger.info("highVolumeGetRewards / Time Elapsed: {}"  + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + "seconds.");
         assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
     }
 }

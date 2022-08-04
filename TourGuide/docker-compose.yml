@@ -1,0 +1,56 @@
+#Specify to compose version corresponding to the current file, mainly 1, 2.x and 3.x
+version: "3"
+#service list
+services:
+    #service name
+  microservice-gpsUtil:
+    #Set the folder where the Dockerfile is located, which can process images that need to be built with Dockerfile
+    build: ./GpsUtil/.
+    #Specify the running image, you can directly pull the existing image for processing
+    image: gpsutil
+    container_name: gps_util
+    #restart: always
+    #Expose the port of the container, the format is host port: container port - 8080:8080
+    ports:
+        - "9000:9000"
+    networks:
+      - tourguide
+  microservice-rewardCentral:
+    build: ./RewardCentral/.
+    image: rewards
+    container_name: reward_central
+    ports:
+      - "8083:8083"
+    networks:
+      - tourguide
+  microservice-tripPricer:
+    build: ./TripPricer/.
+    image: trippricer
+    container_name: trip_pricer
+    ports:
+      - "8082:8082"
+    networks:
+     - tourguide
+  tourGuideApp:
+    build: ./TourGuideApp/.
+    image: tourguide
+    container_name: tourGuide_app
+    ports:
+     - "8080:8080"
+    networks:
+     - tourguide
+    depends_on:
+          - microservice-gpsUtil
+          - microservice-rewardCentral
+          - microservice-tripPricer
+        #set environment variables
+    environment:
+     GPS_URL: gps_util:9000
+     REWARDS-URL: reward_central:8083
+     PRICER-URL: trip_pricer:8082
+
+networks:
+  tourguide:
+    #external: true
+
+

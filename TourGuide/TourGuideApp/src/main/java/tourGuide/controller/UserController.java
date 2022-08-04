@@ -1,10 +1,10 @@
 package tourGuide.controller;
 
 import common.dto.UserDto;
+import common.dto.UserPreferencesDto;
 import common.model.Provider;
 import common.model.User;
 import common.model.UserPreferences;
-import tourGuide.exception.UserExisted;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,22 +30,23 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/userPreferences")
-    public ResponseEntity<String> updateUserPreferences(@RequestParam String userName, @RequestBody UserPreferences userPreferences){
+    @PutMapping("/userPreferences")
+    public ResponseEntity<String> updateUserPreferences(@RequestParam String userName, @RequestBody UserPreferencesDto userPreferencesDto){
         logger.debug("Update user preferences of {} request ",userName);
-        userService.updateUserPreferences(userName, userPreferences);
+        userService.updateUserPreferences(userName, userPreferencesDto);
         return ResponseEntity.status(HttpStatus.OK).body("user preferences saved successfully !!");
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity<String> addUser(@RequestBody UserDto userDto) throws UserExisted {
+    public ResponseEntity<String> addUser(@RequestBody UserDto userDto) {
         logger.debug("Add user:{} request ",userDto.getUserName());
         userService.addUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("user saved successfully !!");
     }
 
-    @PostMapping("/tripDeals")
-    public void updateTripDeals(@RequestParam String userName, @RequestBody List<Provider> tripDeals){
+    @PutMapping("/tripDeals")
+    public ResponseEntity<String> updateTripDeals(@RequestParam String userName, @RequestBody List<Provider> tripDeals){
         userService.updateTripDeals(userName, tripDeals);
+        return ResponseEntity.status(HttpStatus.OK).body("tripDeals saved successfully !!");
     }
 }

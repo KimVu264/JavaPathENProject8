@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.6.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.0")
     }
 }
 
@@ -32,7 +32,13 @@ targetCompatibility = '11'
 dependencies {
     implementation(name:'gpsUtil', ext:'jar')
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation (project(":Common"))
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.7.0'
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '4.5.1'
+
 }
 
 

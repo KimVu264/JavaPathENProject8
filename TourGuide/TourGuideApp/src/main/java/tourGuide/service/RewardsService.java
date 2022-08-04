@@ -3,9 +3,10 @@ package tourGuide.service;
 import common.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tourGuide.proxy.GpsUtilProxy;
 import tourGuide.proxy.RewardCentralProxy;
+import tourGuide.repository.GpsRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,20 +20,22 @@ public class RewardsService {
 
     private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
 
-    private final GpsUtilProxy gpsUtilProxy;
+    @Autowired
+    private GpsUtilService gpsUtilService;
 
-    private final RewardCentralProxy rewardCentralProxy;
+    @Autowired
+    private RewardCentralProxy rewardCentralProxy;
 
     public ExecutorService service = Executors.newFixedThreadPool(200);
     private Logger logger = LoggerFactory.getLogger(RewardsService.class);
 
     // proximity in miles
-    private int defaultProximityBuffer = 10;
+    private int defaultProximityBuffer = 100;
     private int proximityBuffer = defaultProximityBuffer;
-    private int attractionProximityRange = 200;
+    private int attractionProximityRange = 9000;
 
-    public RewardsService(GpsUtilProxy gpsUtilProxy, RewardCentralProxy rewardCentralProxy) {
-        this.gpsUtilProxy = gpsUtilProxy;
+    public RewardsService(GpsUtilService gpsUtilService, RewardCentralProxy rewardCentralProxy) {
+        this.gpsUtilService = gpsUtilService;
         this.rewardCentralProxy = rewardCentralProxy ;
     }
 
@@ -40,8 +43,8 @@ public class RewardsService {
         this.proximityBuffer = proximityBuffer;
     }
 
-    public void setDefaultProximityBuffer() {
-        proximityBuffer = defaultProximityBuffer;
+    public void setDefaultProximityBuffer(int proximityBuffer) {
+        this.defaultProximityBuffer =  proximityBuffer;
     }
 
     /*
@@ -72,7 +75,8 @@ public class RewardsService {
     }
     */
     public CompletableFuture<List<UserReward>> calculateRewards(User user) {
-        List<Attraction> attractions = gpsUtilProxy.getAttractions();
+
+        List<Attraction> attractions = gpsUtilService.getAttractions();
         List<VisitedLocation> userLocations = user.getVisitedLocations();
         List<VisitedLocation> locations = new CopyOnWriteArrayList<>(userLocations);
 
@@ -97,14 +101,14 @@ public class RewardsService {
     }
 
     public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
-        return !(getDistance(attraction, location) > attractionProximityRange);
+        return !(getDistance(new Location(attraction.getLongitude(),attraction.getLatitude()), location) > attractionProximityRange);
     }
 
-    private boolean nearAttraction(Location location, Attraction attraction) {
+    public boolean nearAttraction(Location location, Attraction attraction) {
         return !(getDistance(attraction, location) > proximityBuffer);
     }
 
-    private int getRewardPoints(UUID attractionId, UUID userId) {
+    public int getRewardPoints(UUID attractionId, UUID userId) {
         return rewardCentralProxy.getAttractionRewardPoints(attractionId, userId);
     }
 

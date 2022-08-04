@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - TestPerformance</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>TestPerformance</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/tourGuide.html">tourGuide</a> &gt; TestPerformance</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">2</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">1</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">10m13.12s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">50%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+<li>
+<a href="#tab2">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="highVolumeGetRewards()"></a>
+<h3 class="failures">highVolumeGetRewards()</h3>
+<span class="code">
+<pre>java.util.concurrent.CompletionException: feign.RetryableException: Connection refused: connect executing GET http://localhost:8083/rewardPoints?attractionId=5ccec319-2a6c-4034-b893-9695e24430fe&amp;userId=7e79b99b-6d1e-4462-9a11-5c5e8cb50f86
+	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:314)
+	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:319)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1702)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: feign.RetryableException: Connection refused: connect executing GET http://localhost:8083/rewardPoints?attractionId=5ccec319-2a6c-4034-b893-9695e24430fe&amp;userId=7e79b99b-6d1e-4462-9a11-5c5e8cb50f86
+	at app//feign.FeignException.errorExecuting(FeignException.java:268)
+	at app//feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:129)
+	at app//feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:89)
+	at app//feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:100)
+	at app//com.sun.proxy.$Proxy107.getAttractionRewardPoints(Unknown Source)
+	at app//tourGuide.service.RewardsService.getRewardPoints(RewardsService.java:112)
+	at app//tourGuide.service.RewardsService.lambda$calculateRewards$1(RewardsService.java:94)
+	at java.base@11.0.15/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at app//tourGuide.service.RewardsService.lambda$calculateRewards$2(RewardsService.java:86)
+	at java.base@11.0.15/java.util.concurrent.CopyOnWriteArrayList.forEach(CopyOnWriteArrayList.java:807)
+	at app//tourGuide.service.RewardsService.lambda$calculateRewards$3(RewardsService.java:84)
+	at java.base@11.0.15/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1700)
+	... 3 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.base/java.net.PlainSocketImpl.waitForConnect(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:107)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:177)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:474)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:569)
+	at java.base/sun.net.www.http.HttpClient.&lt;init&gt;(HttpClient.java:242)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:341)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:362)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1253)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1187)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1081)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1015)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1592)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1520)
+	at java.base/java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:527)
+	at feign.Client$Default.convertResponse(Client.java:109)
+	at feign.Client$Default.execute(Client.java:105)
+	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:119)
+	... 13 more
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="failures">highVolumeGetRewards()</td>
+<td class="failures">7m39.23s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="success">highVolumeTrackLocation()</td>
+<td class="success">2m33.89s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>16:43:38.247 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+16:43:38.299 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+16:43:38.424 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [tourGuide.TestPerformance] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+16:43:38.465 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [tourGuide.TestPerformance], using SpringBootContextLoader
+16:43:38.480 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [tourGuide.TestPerformance]: class path resource [tourGuide/TestPerformance-context.xml] does not exist
+16:43:38.481 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [tourGuide.TestPerformance]: class path resource [tourGuide/TestPerformanceContext.groovy] does not exist
+16:43:38.482 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [tourGuide.TestPerformance]: no resource found for suffixes {-context.xml, Context.groovy}.
+16:43:38.484 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [tourGuide.TestPerformance]: TestPerformance does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+16:43:38.636 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [tourGuide.TestPerformance]
+16:43:38.828 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Users\phamt\Desktop\OPENCLASSROOMS\P8\JavaPathENProject8\TourGuide\TourGuideApp\build\classes\java\main\tourGuide\Application.class]
+16:43:38.831 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration tourGuide.Application for test class tourGuide.TestPerformance
+16:43:39.174 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [tourGuide.TestPerformance]: using defaults.
+16:43:39.175 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+16:43:39.214 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttributeSource]
+16:43:39.216 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
+16:43:39.217 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@7c2e88b9, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@556843a5, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3c5044fa, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@3db5195, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@b386a17, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1cda75be, org.springframework.test.context.event.EventPublishingTestExecutionListener@2213854b, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@7b1d2f65, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@33bd9ac3, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7c857e8f, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@42028589, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@50f6ecab, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@fc21ff4]
+16:43:39.228 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@3702d0ed testClass = TestPerformance, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@5b7b0ada testClass = TestPerformance, locations = '{}', classes = '{class tourGuide.Application}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@15ac02d5, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@54b44879, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@1182d1df, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@67941d, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@56b9d43f, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@574cd322], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.0)
+
+2022-08-04 16:43:40.660  INFO 28224 --- [    Test worker] tourGuide.TestPerformance                : Starting TestPerformance using Java 11.0.15 on IDEAPAD-S530 with PID 28224 (started by phamt in C:\Users\phamt\Desktop\OPENCLASSROOMS\P8\JavaPathENProject8\TourGuide\TourGuideApp)
+2022-08-04 16:43:40.663 DEBUG 28224 --- [    Test worker] tourGuide.TestPerformance                : Running with Spring Boot v2.7.0, Spring v5.3.20
+2022-08-04 16:43:40.664  INFO 28224 --- [    Test worker] tourGuide.TestPerformance                : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2022-08-04 16:43:43.058  INFO 28224 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=59766f26-e44c-3e75-8ba9-4ae96ff341da
+2022-08-04 16:43:45.823  INFO 28224 --- [    Test worker] tourGuide.service.TourGuideService       : TestMode enabled
+2022-08-04 16:43:45.824  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:43:45.824 DEBUG 28224 --- [    Test worker] tourGuide.service.TourGuideService       : Initializing users
+2022-08-04 16:43:45.908  INFO 28224 --- [    Test worker] o.j.m.DefaultMonetaryContextFactory      : Using custom MathContext: precision=256, roundingMode=HALF_EVEN
+2022-08-04 16:43:45.954 DEBUG 28224 --- [    Test worker] tourGuide.helper.InternalTestingData     : Created 100 internal test users.
+2022-08-04 16:43:45.955 DEBUG 28224 --- [    Test worker] tourGuide.service.TourGuideService       : Finished initializing users
+2022-08-04 16:43:45.962  INFO 28224 --- [pool-3-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:43:45.964 DEBUG 28224 --- [pool-3-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100 users.
+2022-08-04 16:43:45.980  INFO 28224 --- [pool-4-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:43:45.980 DEBUG 28224 --- [pool-4-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100 users.
+2022-08-04 16:43:46.681 DEBUG 28224 --- [pool-4-thread-1] tourGuide.service.TrackerService         : Tracker Time Elapsed: 0 seconds.
+2022-08-04 16:43:46.681 DEBUG 28224 --- [pool-4-thread-1] tourGuide.service.TrackerService         : Tracker sleeping
+2022-08-04 16:43:46.700 DEBUG 28224 --- [pool-3-thread-1] tourGuide.service.TrackerService         : Tracker Time Elapsed: 0 seconds.
+2022-08-04 16:43:46.701 DEBUG 28224 --- [pool-3-thread-1] tourGuide.service.TrackerService         : Tracker sleeping
+2022-08-04 16:43:48.607  INFO 28224 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2022-08-04 16:43:48.701  INFO 28224 --- [    Test worker] tourGuide.TestPerformance                : Started TestPerformance in 9.33 seconds (JVM running for 13.269)
+2022-08-04 16:43:50.748  INFO 28224 --- [    Test worker] tourGuide.service.TourGuideService       : TestMode enabled
+2022-08-04 16:43:50.749  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:43:50.750 DEBUG 28224 --- [    Test worker] tourGuide.service.TourGuideService       : Initializing users
+2022-08-04 16:43:52.035 DEBUG 28224 --- [    Test worker] tourGuide.helper.InternalTestingData     : Created 100000 internal test users.
+2022-08-04 16:43:52.035 DEBUG 28224 --- [    Test worker] tourGuide.service.TourGuideService       : Finished initializing users
+2022-08-04 16:43:52.037  INFO 28224 --- [pool-6-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:43:52.042  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:43:52.057 DEBUG 28224 --- [pool-6-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100000 users.
+2022-08-04 16:46:22.698  INFO 28224 --- [    Test worker] TestPerformance                          : highVolumeTrackLocation: Time Elapsed: 150 seconds.
+2022-08-04 16:46:22.737  INFO 28224 --- [    Test worker] tourGuide.service.TourGuideService       : TestMode enabled
+2022-08-04 16:46:22.738  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:46:22.760 DEBUG 28224 --- [    Test worker] tourGuide.service.TourGuideService       : Initializing users
+2022-08-04 16:46:23.368 DEBUG 28224 --- [    Test worker] tourGuide.helper.InternalTestingData     : Created 100000 internal test users.
+2022-08-04 16:46:23.369 DEBUG 28224 --- [    Test worker] tourGuide.service.TourGuideService       : Finished initializing users
+2022-08-04 16:46:23.370  INFO 28224 --- [pool-8-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:46:23.371  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:46:23.385 DEBUG 28224 --- [pool-8-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100000 users.
+2022-08-04 16:48:04.483 DEBUG 28224 --- [pool-6-thread-1] tourGuide.service.TrackerService         : Tracker Time Elapsed: 252 seconds.
+2022-08-04 16:48:04.484 DEBUG 28224 --- [pool-6-thread-1] tourGuide.service.TrackerService         : Tracker sleeping
+2022-08-04 16:48:46.694  INFO 28224 --- [pool-4-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:48:46.703  INFO 28224 --- [pool-3-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:48:46.732 DEBUG 28224 --- [pool-4-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100000 users.
+2022-08-04 16:48:46.744 DEBUG 28224 --- [pool-3-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100000 users.
+2022-08-04 16:49:11.956 DEBUG 28224 --- [pool-8-thread-1] tourGuide.service.TrackerService         : Tracker Time Elapsed: 168 seconds.
+2022-08-04 16:49:11.957 DEBUG 28224 --- [pool-8-thread-1] tourGuide.service.TrackerService         : Tracker sleeping
+2022-08-04 16:52:14.925 DEBUG 28224 --- [pool-3-thread-1] tourGuide.service.TrackerService         : Tracker Time Elapsed: 208 seconds.
+2022-08-04 16:52:14.934 DEBUG 28224 --- [pool-3-thread-1] tourGuide.service.TrackerService         : Tracker sleeping
+2022-08-04 16:52:14.972 DEBUG 28224 --- [pool-4-thread-1] tourGuide.service.TrackerService         : Tracker Time Elapsed: 208 seconds.
+2022-08-04 16:52:14.972 DEBUG 28224 --- [pool-4-thread-1] tourGuide.service.TrackerService         : Tracker sleeping
+2022-08-04 16:53:04.490  INFO 28224 --- [pool-6-thread-1] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:53:04.499 DEBUG 28224 --- [pool-6-thread-1] tourGuide.service.TrackerService         : Begin Tracker. Tracking 100000 users.
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.4.2</a> at 4 août 2022 à 16:55:29</p>
+</div>
+</div>
+</body>
+</html>

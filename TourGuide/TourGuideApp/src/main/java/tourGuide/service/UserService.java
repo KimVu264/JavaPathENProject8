@@ -1,15 +1,17 @@
 package tourGuide.service;
 
 import common.dto.UserDto;
+import common.dto.UserLocationDto;
+import common.dto.UserPreferencesDto;
 import common.model.Provider;
 import common.model.User;
 import common.model.UserPreferences;
 
+import common.model.VisitedLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tourGuide.exception.UserExisted;
 import tourGuide.repository.UserRepository;
 
 import java.util.*;
@@ -19,8 +21,12 @@ public class UserService {
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<User> getAllUsers() {
         logger.info("Get all internalUserMap users");
@@ -31,23 +37,31 @@ public class UserService {
         return userRepository.findByUserName(userName);
     }
 
-    public User getUserById(UUID userId) {
-        logger.info("Get internalUserMap with user: {}",userId);
-        return userRepository.findById(userId);
-    }
-    public void addUser(UserDto userDto) throws UserExisted {
+    public void addUser(UserDto userDto)  {
         logger.debug("get user {}", userDto.getUserName());
-        User user = userRepository.findByUserName(userDto.getUserName());
-        if (user != null) {
-            throw new UserExisted();
+        User userToSave = userRepository.findByUserName(userDto.getUserName());
+        if (userToSave != null) {
+           logger.error("User with username : " + userDto.getUserName() + " already exists ");
         }
+        userRepository.saveUser(new User(UUID.randomUUID(), userDto.getUserName(), userDto.getPhoneNumber(), userDto.getEmailAddress()));
     }
 
+    public List<UserLocationDto> getAllCurrentLocations() {
+        List<UserLocationDto> userLocationsList = new ArrayList<>();
+        for (User user : getAllUsers()) {
+            UUID userId = user.getUserId();
+            VisitedLocation userLastVisitedLocation = user.getLastVisitedLocation();
+            userLocationsList.add(new UserLocationDto(userId, userLastVisitedLocation.getLocation()));
+            user.addToVisitedLocations(userLastVisitedLocation);
+        }
+        logger.info("Get all current location for all users");
+        return userLocationsList;
+    }
 
-    public void updateUserPreferences(String userName, UserPreferences userPreferences)  {
+    public void updateUserPreferences(String userName, UserPreferencesDto userPreferencesDto)  {
         logger.debug("get user {}", userName);
         User user = getUser(userName);
-        user.setUserPreferences(userPreferences);
+        user.setUserPreferences(new UserPreferences(userPreferencesDto.getTripDuration(), userPreferencesDto.getTicketQuantity(), userPreferencesDto.getNumberOfAdults(), userPreferencesDto.getNumberOfChildren()));
     }
 
     public void updateTripDeals(String userName, List<Provider> tripDeals) {

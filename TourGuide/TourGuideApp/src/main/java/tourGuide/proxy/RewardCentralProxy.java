@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-@Service
 @FeignClient(value="microservice-rewardCentral", url="localhost:8083")
 public interface RewardCentralProxy {
 

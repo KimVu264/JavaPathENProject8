@@ -33,6 +33,11 @@ dependencies {
     implementation(name:'RewardCentral', ext:'jar')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '4.5.1'
+
+    implementation(project(":Common"))
+
 }
 
 

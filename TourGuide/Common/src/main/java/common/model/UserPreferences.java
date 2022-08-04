@@ -1,5 +1,6 @@
 package common.model;
 
+import common.dto.UserPreferencesDto;
 import org.javamoney.moneta.Money;
 
 import javax.money.CurrencyUnit;
@@ -21,9 +22,13 @@ public class UserPreferences {
 	}
 
 	public UserPreferences(int tripDuration, int ticketQuantity, int numberOfAdults, int numberOfChildren) {
+		this.tripDuration     = tripDuration;
+		this.ticketQuantity   = ticketQuantity;
+		this.numberOfAdults   = numberOfAdults;
+		this.numberOfChildren = numberOfChildren;
 	}
 
-	public void setAttractionProximity(int attractionProximity) {
+    public void setAttractionProximity(int attractionProximity) {
 		this.attractionProximity = attractionProximity;
 	}
 

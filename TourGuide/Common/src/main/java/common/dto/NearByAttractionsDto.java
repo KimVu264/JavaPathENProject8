@@ -3,51 +3,52 @@ package common.dto;
 import common.model.Attraction;
 import common.model.Location;
 
-public class NearByAttractionsDto {
-	private Attraction attraction;
-	private Location userLocation;
-	private Double distance;
-	private Integer rewardPoints;
+public class NearByAttractionsDto extends Location {
+	private String attractionName;
+	private double distance;
+	private int rewardPoints;
+
+	public NearByAttractionsDto(double latitude, double longitude, String attractionName, double distance, int rewardPoints) {
+
+		super(latitude, longitude);
+		this.attractionName = attractionName;
+		this.distance       = distance;
+		this.rewardPoints   = rewardPoints;
+	}
 
 	public NearByAttractionsDto() {
+
 	}
 
-	public NearByAttractionsDto(Attraction attraction, Location userLocation, Double distance, Integer rewardPoints) {
-		this.attraction = attraction;
-		this.userLocation = userLocation;
-		this.distance = distance;
-		this.rewardPoints = rewardPoints;
+	public String getAttractionName() {
+
+		return attractionName;
 	}
 
-	public Attraction getAttraction() {
-		return attraction;
+	public void setAttractionName(String attractionName) {
+
+		this.attractionName = attractionName;
 	}
 
-	public void setAttraction(Attraction attraction) {
-		this.attraction = attraction;
-	}
 
-	public Location getUserLocation() {
-		return userLocation;
-	}
 
-	public void setUserLocation(Location userLocation) {
-		this.userLocation = userLocation;
-	}
+	public double getDistance() {
 
-	public Double getDistance() {
 		return distance;
 	}
 
-	public void setDistance(Double distance) {
+	public void setDistance(double distance) {
+
 		this.distance = distance;
 	}
 
-	public Integer getRewardPoints() {
+	public int getRewardPoints() {
+
 		return rewardPoints;
 	}
 
-	public void setRewardPoints(Integer rewardPoints) {
+	public void setRewardPoints(int rewardPoints) {
+
 		this.rewardPoints = rewardPoints;
 	}
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TourGuideApp</a> &gt; <a href="index.source.html" class="el_package">tourGuide.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package tourGuide.service;
+
+import common.dto.UserDto;
+import common.dto.UserLocationDto;
+import common.dto.UserPreferencesDto;
+import common.model.Provider;
+import common.model.User;
+import common.model.UserPreferences;
+
+import common.model.VisitedLocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tourGuide.repository.UserRepository;
+
+import java.util.*;
+
+@Service
+public class UserService {
+
+<span class="fc" id="L22">    private Logger logger = LoggerFactory.getLogger(UserService.class);</span>
+
+    private final UserRepository userRepository;
+
+    @Autowired
+<span class="fc" id="L27">    public UserService(UserRepository userRepository) {</span>
+<span class="fc" id="L28">        this.userRepository = userRepository;</span>
+<span class="fc" id="L29">    }</span>
+
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L32">        logger.info(&quot;Get all internalUserMap users&quot;);</span>
+<span class="fc" id="L33">        return userRepository.findAllUsers();</span>
+    }
+    public User getUser(String userName) {
+<span class="fc" id="L36">        logger.info(&quot;Get internalUserMap with user: {}&quot;,userName);</span>
+<span class="fc" id="L37">        return userRepository.findByUserName(userName);</span>
+    }
+
+    public void addUser(UserDto userDto)  {
+<span class="fc" id="L41">        logger.debug(&quot;get user {}&quot;, userDto.getUserName());</span>
+<span class="fc" id="L42">        User userToSave = userRepository.findByUserName(userDto.getUserName());</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (userToSave != null) {</span>
+<span class="fc" id="L44">           logger.error(&quot;User with username : &quot; + userDto.getUserName() + &quot; already exists &quot;);</span>
+        }
+<span class="fc" id="L46">        userRepository.saveUser(new User(UUID.randomUUID(), userDto.getUserName(), userDto.getPhoneNumber(), userDto.getEmailAddress()));</span>
+<span class="fc" id="L47">    }</span>
+
+    public List&lt;UserLocationDto&gt; getAllCurrentLocations() {
+<span class="nc" id="L50">        List&lt;UserLocationDto&gt; userLocationsList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (User user : getAllUsers()) {</span>
+<span class="nc" id="L52">            UUID userId = user.getUserId();</span>
+<span class="nc" id="L53">            VisitedLocation userLastVisitedLocation = user.getLastVisitedLocation();</span>
+<span class="nc" id="L54">            userLocationsList.add(new UserLocationDto(userId, userLastVisitedLocation.getLocation()));</span>
+<span class="nc" id="L55">            user.addToVisitedLocations(userLastVisitedLocation);</span>
+<span class="nc" id="L56">        }</span>
+<span class="nc" id="L57">        logger.info(&quot;Get all current location for all users&quot;);</span>
+<span class="nc" id="L58">        return userLocationsList;</span>
+    }
+
+    public void updateUserPreferences(String userName, UserPreferencesDto userPreferencesDto)  {
+<span class="nc" id="L62">        logger.debug(&quot;get user {}&quot;, userName);</span>
+<span class="nc" id="L63">        User user = getUser(userName);</span>
+<span class="nc" id="L64">        user.setUserPreferences(new UserPreferences(userPreferencesDto.getTripDuration(), userPreferencesDto.getTicketQuantity(), userPreferencesDto.getNumberOfAdults(), userPreferencesDto.getNumberOfChildren()));</span>
+<span class="nc" id="L65">    }</span>
+
+    public void updateTripDeals(String userName, List&lt;Provider&gt; tripDeals) {
+<span class="nc" id="L68">        User user = getUser(userName);</span>
+<span class="nc" id="L69">        user.setTripDeals(tripDeals);</span>
+<span class="nc" id="L70">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

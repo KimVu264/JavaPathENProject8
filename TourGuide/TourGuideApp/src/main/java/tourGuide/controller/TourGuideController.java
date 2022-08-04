@@ -2,6 +2,7 @@ package tourGuide.controller;
 
 import com.jsoniter.output.JsonStream;
 import common.dto.NearByAttractionsDto;
+import common.dto.UserLocationDto;
 import common.model.Provider;
 import common.model.User;
 import common.model.VisitedLocation;
@@ -44,16 +45,15 @@ public class TourGuideController {
     /**
      * Get the closest five tourist attractions to the user
      *
-     * @param userId
+     * @param userName
      * @return a List of Attractions that contains name of tourist attraction, user's location, distance between user and attraction, reward points for each attraction
      */
 
-    @RequestMapping("/getNearbyAttractions")
-    public List<NearByAttractionsDto> getNearbyAttractions(@RequestParam UUID userId) {
-        logger.debug("near by attractions request");
-        VisitedLocation visitedLocation = tourGuideService.getUserLocation(userId);
-        List<NearByAttractionsDto> attractionList = tourGuideService.getNearByAttractions(visitedLocation.userId);
-        return attractionList;
+    @RequestMapping("/getNearByAttractions")
+    public List<NearByAttractionsDto> getNearbyAttractions(@RequestParam String userName) {
+        logger.info("Get nearby attractions with username: {}", userName);
+        UUID userId = tourGuideService.getUser(userName).getUserId();
+        return tourGuideService.getNearByAttractions(userId);
     }
 
     @RequestMapping("/getRewards")
@@ -73,9 +73,9 @@ public class TourGuideController {
     //     }
 
     @RequestMapping("/getAllCurrentLocations")
-    public String getAllCurrentLocations() {
+    public List<UserLocationDto> getAllCurrentLocations() {
         logger.info("Get all users current Location");
-        return JsonStream.serialize(tourGuideService.getAllUsersLocation());
+        return tourGuideService.getAllCurrentLocations();
     }
 
     @RequestMapping("/getTripDeals")

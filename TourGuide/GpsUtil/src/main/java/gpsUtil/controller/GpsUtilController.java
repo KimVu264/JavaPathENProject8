@@ -20,15 +20,15 @@ public class GpsUtilController {
     @Autowired
     GpsUtilService gpsUtilService;
 
-    @GetMapping("attractions")
+    @GetMapping("/attractions")
     public List<Attraction> getAttraction(){
         logger.debug(" get all attractions request");
         return gpsUtilService.getAttractions();
     }
 
-    @GetMapping("userLocation")
-    public VisitedLocation getUserLocation(@RequestParam UUID userID )  {
-        logger.debug(" get location for user id: {} request",userID);
-        return gpsUtilService.getUserLocation(userID);
+    @GetMapping("/userLocation")
+    public VisitedLocation getUserLocation(@RequestParam UUID userId )  {
+        logger.debug(" get location for user id: {} request",userId);
+        return gpsUtilService.getUserLocation(userId);
     }
 }

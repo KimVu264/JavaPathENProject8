@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.0")
+    }
+}
+
 plugins {
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
@@ -6,7 +15,7 @@ plugins {
 }
 
 jar {
-    archiveBaseName = 'TourGuideApp'
+    archiveBaseName = 'tourGuideApp'
     archiveVersion =  '0.0.1'
 }
 sourceCompatibility = '11'
@@ -15,9 +24,7 @@ targetCompatibility = '11'
 repositories {
     mavenCentral()
 }
-configurations {
-    all*.exclude group:'org.springframework.boot', module:'spring-boot-starter-logging'
-}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -25,7 +32,7 @@ dependencies {
     implementation group: 'com.jsoniter', name: 'jsoniter', version: '0.9.23'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.1'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j', version: '1.3.8.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '1.3.8.RELEASE'
 
     implementation(project(":Common"))
 

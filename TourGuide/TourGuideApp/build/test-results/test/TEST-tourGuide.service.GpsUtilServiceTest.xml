@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tourGuide.service.GpsUtilServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-08-04T14:55:24" hostname="IDEAPAD-S530" time="0.579">
+  <properties/>
+  <testcase name="getAttractionsTest_withEmptyList()" classname="tourGuide.service.GpsUtilServiceTest" time="0.481"/>
+  <testcase name="getAttractionsTest()" classname="tourGuide.service.GpsUtilServiceTest" time="0.011"/>
+  <testcase name="getUserLocationTest()" classname="tourGuide.service.GpsUtilServiceTest" time="0.081"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

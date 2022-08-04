@@ -1,5 +1,7 @@
 package common.dto;
 
+import java.util.UUID;
+
 public class UserDto {
 
     private  String userName;
@@ -16,7 +18,6 @@ public class UserDto {
     public UserDto() {
 
     }
-
 
     public String getUserName() {
 

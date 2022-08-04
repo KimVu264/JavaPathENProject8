@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TourGuideController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TourGuideApp</a> &gt; <a href="index.source.html" class="el_package">tourGuide.controller</a> &gt; <span class="el_source">TourGuideController.java</span></div><h1>TourGuideController.java</h1><pre class="source lang-java linenums">package tourGuide.controller;
+
+import com.jsoniter.output.JsonStream;
+import common.dto.NearByAttractionsDto;
+import common.dto.UserLocationDto;
+import common.model.Provider;
+import common.model.User;
+import common.model.VisitedLocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import tourGuide.service.TourGuideService;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+<span class="fc" id="L21">public class TourGuideController {</span>
+
+    @Autowired
+    TourGuideService tourGuideService;
+<span class="fc" id="L25">    private Logger logger = LoggerFactory.getLogger(TourGuideController.class);</span>
+
+    @RequestMapping(&quot;/&quot;)
+    public String index() {
+<span class="fc" id="L29">        logger.info(&quot;get home page&quot;);</span>
+<span class="fc" id="L30">        return &quot;Greetings from TourGuide!&quot;;</span>
+    }
+
+    @RequestMapping(&quot;/getUser&quot;)
+    private User getUser(String userName) {
+<span class="fc" id="L35">        logger.info(&quot;Get user: {}&quot;, userName);</span>
+<span class="fc" id="L36">        return tourGuideService.getUser(userName);</span>
+    }
+
+    @RequestMapping(&quot;/getLocation&quot;)
+    public VisitedLocation getLocation(@RequestParam UUID userId) {
+<span class="fc" id="L41">        logger.info(&quot;Get user locations with userId: {}&quot;, userId);</span>
+<span class="fc" id="L42">        return tourGuideService.getUserLocation(userId);</span>
+    }
+
+    /**
+     * Get the closest five tourist attractions to the user
+     *
+     * @param userName
+     * @return a List of Attractions that contains name of tourist attraction, user's location, distance between user and attraction, reward points for each attraction
+     */
+
+    @RequestMapping(&quot;/getNearByAttractions&quot;)
+    public List&lt;NearByAttractionsDto&gt; getNearbyAttractions(@RequestParam String userName) {
+<span class="fc" id="L54">        logger.info(&quot;Get nearby attractions with username: {}&quot;, userName);</span>
+<span class="fc" id="L55">        UUID userId = tourGuideService.getUser(userName).getUserId();</span>
+<span class="fc" id="L56">        return tourGuideService.getNearByAttractions(userId);</span>
+    }
+
+    @RequestMapping(&quot;/getRewards&quot;)
+    public String getRewards(@RequestParam String userName) {
+<span class="fc" id="L61">        logger.info(&quot;Get rewards with user: {}&quot;, userName);</span>
+<span class="fc" id="L62">        return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));</span>
+    }
+
+    //  Get a list of every user's most recent location as JSON
+    //- Note: does not use gpsUtil to query for their current location,
+    //        but rather gathers the user's current location from their stored location history.
+    //
+    // Return object should be the just a JSON mapping of userId to Locations similar to:
+    //     {
+    //        &quot;019b04a9-067a-4c76-8817-ee75088c3822&quot;: {&quot;longitude&quot;:-48.188821,&quot;latitude&quot;:74.84371}
+    //        ...
+    //     }
+
+    @RequestMapping(&quot;/getAllCurrentLocations&quot;)
+    public List&lt;UserLocationDto&gt; getAllCurrentLocations() {
+<span class="fc" id="L77">        logger.info(&quot;Get all users current Location&quot;);</span>
+<span class="fc" id="L78">        return tourGuideService.getAllCurrentLocations();</span>
+    }
+
+    @RequestMapping(&quot;/getTripDeals&quot;)
+    public List&lt;Provider&gt; getTripDeals(@RequestParam String userName) {
+<span class="fc" id="L83">        List&lt;Provider&gt; providers = tourGuideService.getTripDeals(getUser(userName));</span>
+<span class="fc" id="L84">        logger.info(&quot;Get trip deals of user: {}&quot;, userName);</span>
+<span class="fc" id="L85">        return providers;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

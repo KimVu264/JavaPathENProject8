@@ -1,16 +1,18 @@
 package tourGuide.service;
 
 import common.dto.NearByAttractionsDto;
+import common.dto.UserLocationDto;
 import common.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tourGuide.helper.InternalTestingData;
-import tourGuide.proxy.GpsUtilProxy;
-import tourGuide.proxy.RewardCentralProxy;
 import tourGuide.proxy.TripPricerProxy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,22 +21,19 @@ import java.util.stream.Collectors;
 @Service
 public class TourGuideService {
 
-    private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
-
     public final UserService userService;
-    private final GpsUtilProxy gpsUtilProxy;
+    public final TrackerService trackerService;
+    private final GpsUtilService gpsUtilService;
     private final RewardsService rewardsService;
-    private final RewardCentralProxy rewardCentralProxy;
     private final TripPricerProxy tripPricerProxy;
     public InternalTestingData internalTestingData;
-    public final TrackerService trackerService;
-
     public ExecutorService service = Executors.newFixedThreadPool(200);
+    private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 
-    public TourGuideService(UserService userService, GpsUtilProxy gpsUtilProxy, RewardCentralProxy rewardCentralProxy, TripPricerProxy tripPricerProxy, InternalTestingData internalTestingData) {
+    public TourGuideService(RewardsService rewardsService, UserService userService, GpsUtilService gpsUtilService, TripPricerProxy tripPricerProxy, InternalTestingData internalTestingData) {
+        this.rewardsService = rewardsService;
         this.userService = userService;
-        this.gpsUtilProxy = gpsUtilProxy;
-        this.rewardCentralProxy = rewardCentralProxy;
+        this.gpsUtilService = gpsUtilService;
         this.tripPricerProxy = tripPricerProxy;
         this.internalTestingData = internalTestingData;
 
@@ -44,7 +43,6 @@ public class TourGuideService {
         logger.debug("Finished initializing users");
 
         trackerService = new TrackerService(this);
-        rewardsService = new RewardsService(gpsUtilProxy, rewardCentralProxy);
         addShutDownHook();
     }
 
@@ -53,14 +51,14 @@ public class TourGuideService {
     }
 
     public VisitedLocation getUserLocation(UUID userId) {
-        return gpsUtilProxy.getUserLocation(userId);
+        return gpsUtilService.getUserLocation(userId);
     }
 
     public User getUser(String userName) {
         return userService.getUser(userName);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -78,21 +76,19 @@ public class TourGuideService {
 
     public CompletableFuture<?> trackUserLocation(UUID userId) {
         Locale.setDefault(Locale.US);
-        logger.debug("track user location");
-        return CompletableFuture.runAsync(() -> gpsUtilProxy.getUserLocation(userId), service);
+        //logger.debug("track user location");
+        return CompletableFuture.runAsync(() -> gpsUtilService.getUserLocation(userId), service);
     }
 
     public List<NearByAttractionsDto> getNearByAttractions(UUID userId) {
         List<NearByAttractionsDto> nearbyAttractionsListDto = new ArrayList<>();
         VisitedLocation userLocation = getUserLocation(userId);
-        for (Attraction attraction : gpsUtilProxy.getAttractions()) {
+        for (Attraction attraction : gpsUtilService.getAttractions()) {
             if (rewardsService.isWithinAttractionProximity(attraction, userLocation.getLocation())) {
                 NearByAttractionsDto nearBy = new NearByAttractionsDto();
-                nearBy.setAttraction(attraction);
-                nearBy.setUserLocation(userLocation.getLocation());
+                nearBy.setAttractionName(attraction.getAttractionName());
                 nearBy.setDistance(rewardsService.getDistance(new Location(attraction.getLongitude(), attraction.getLatitude()), userLocation.getLocation()));
-                nearBy.setRewardPoints(rewardCentralProxy.getAttractionRewardPoints(attraction.getAttractionId(), userId));
-                nearbyAttractionsListDto.add(nearBy);
+                nearBy.setRewardPoints(rewardsService.getRewardPoints(attraction.getAttractionId(), userId));
                 logger.info("Get nearby attractions: {}", nearBy);
                 nearbyAttractionsListDto.add(nearBy);
             }
@@ -101,11 +97,9 @@ public class TourGuideService {
         return nearbyAttractionsListDto.stream().limit(5).collect(Collectors.toList());
     }
 
-    public Map<String, Location> getAllUsersLocation() {
-        logger.debug("getting all users location");
-        return getAllUsers().stream()
-                .collect(Collectors.
-                        toMap(u -> u.getUserId().toString(), u -> getUserLocation(u.getUserId()).location));
+    public List<UserLocationDto> getAllCurrentLocations() {
+        logger.info("Get all users current Location");
+        return userService.getAllCurrentLocations();
     }
 
     private void addShutDownHook() {

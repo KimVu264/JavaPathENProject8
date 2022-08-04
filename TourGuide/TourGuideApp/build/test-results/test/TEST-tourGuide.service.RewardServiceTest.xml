@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tourGuide.service.RewardServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-08-04T14:55:25" hostname="IDEAPAD-S530" time="1.33">
+  <properties/>
+  <testcase name="calculateRewardsTest()" classname="tourGuide.service.RewardServiceTest" time="1.33"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

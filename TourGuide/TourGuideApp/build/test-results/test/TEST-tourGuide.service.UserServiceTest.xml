@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tourGuide.service.UserServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-08-04T14:55:27" hostname="IDEAPAD-S530" time="0.373">
+  <properties/>
+  <testcase name="addUserTest()" classname="tourGuide.service.UserServiceTest" time="0.329"/>
+  <testcase name="getAllUsersTest()" classname="tourGuide.service.UserServiceTest" time="0.012"/>
+  <testcase name="getUserTest()" classname="tourGuide.service.UserServiceTest" time="0.027"/>
+  <system-out><![CDATA[2022-08-04 16:55:28.244 DEBUG 28224 --- [    Test worker] tourGuide.service.UserService            : get user john
+2022-08-04 16:55:28.264  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get all internalUserMap users
+2022-08-04 16:55:28.291  INFO 28224 --- [    Test worker] tourGuide.service.UserService            : Get internalUserMap with user: john
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

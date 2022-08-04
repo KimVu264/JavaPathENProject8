@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class TrackerService extends Thread {
 
     private static final long trackingPollingInterval = TimeUnit.MINUTES.toSeconds(5);
-    private final ExecutorService executorService = Executors.newFixedThreadPool(200);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(100);
     private final TourGuideService tourGuideService;
     private Logger logger = LoggerFactory.getLogger(TrackerService.class);
     private boolean stop = false;
@@ -58,8 +58,7 @@ public class TrackerService extends Thread {
             logger.debug("Tracker Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
             stopWatch.reset();
             try {
-                logger.debug("Tracker slee" +
-                        "ping");
+                logger.debug("Tracker sleeping");
                 TimeUnit.SECONDS.sleep(trackingPollingInterval);
             } catch (InterruptedException e) {
                 break;

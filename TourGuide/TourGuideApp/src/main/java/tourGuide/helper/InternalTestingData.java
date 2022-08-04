@@ -6,7 +6,6 @@ import common.model.VisitedLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import tourGuide.repository.UserRepository;
 
@@ -19,13 +18,17 @@ import java.util.stream.IntStream;
 public class InternalTestingData {
 
     //public static final String tripPricerApiKey = "test-server-api-key";
-    // Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
+    //Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     //public final Map<String, User> internalUserMap = new HashMap<>();
     private Logger logger = LoggerFactory.getLogger(InternalTestingData.class);
+
+    @Autowired
+    public InternalTestingData(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void initializeInternalUsers() {
 
@@ -35,7 +38,7 @@ public class InternalTestingData {
             String email = userName + "@tourGuide.com";
             User user = new User(UUID.randomUUID(), userName, phone, email);
             generateUserLocationHistory(user);
-            userRepository.addUser(user);
+            userRepository.saveUser(user);
             //internalUserMap.put(userName, user);
 
         });
