@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
+//@FeignClient(value="microservice-gpsUtil", url="${tourguide.microservice-gpsUtil}")
 @FeignClient(value="microservice-gpsUtil", url="localhost:9000")
 public interface GpsUtilProxy {
 

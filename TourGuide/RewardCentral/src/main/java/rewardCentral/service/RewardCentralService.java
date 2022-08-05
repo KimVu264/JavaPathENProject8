@@ -18,7 +18,6 @@ public class RewardCentralService {
     public RewardCentralService() {this.rewardsCentral = new RewardCentral();}
 
     public int getRewardPoints(UUID attractionId, UUID userId) {
-
         logger.debug("get Reward Points");
         return rewardsCentral.getAttractionRewardPoints(attractionId, userId);
     }

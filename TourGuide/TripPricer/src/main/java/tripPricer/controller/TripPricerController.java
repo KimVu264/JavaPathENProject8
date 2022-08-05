@@ -20,5 +20,4 @@ public class TripPricerController {
     public List<Provider> getTripDeals (@RequestParam UUID userId, @RequestParam int numberOfAdults, @RequestParam int numberOfChildren, @RequestParam int tripDuration, @RequestParam int rewardPoints ) {
         return tripPricerService.getPricer(userId, numberOfAdults, numberOfChildren, tripDuration, rewardPoints);
     }
-
 }

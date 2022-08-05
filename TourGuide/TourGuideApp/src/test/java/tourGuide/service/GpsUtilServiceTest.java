@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tourGuide.repository.GpsRepository;
+import tourGuide.proxy.GpsUtilProxy;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class GpsUtilServiceTest {
 
     @Mock
-    private GpsRepository gpsRepository;
+    private GpsUtilProxy gpsUtilProxy;
 
     @InjectMocks
     private GpsUtilService gpsUtilService;
@@ -44,7 +44,7 @@ public class GpsUtilServiceTest {
     @Test
     void getAttractionsTest() {
         //Arrange
-        when(gpsRepository.getAttractionList()).thenReturn(List.of(attraction, attraction));
+        when(gpsUtilProxy.getAttractions()).thenReturn(List.of(attraction, attraction));
         //Act
         List<Attraction> result = gpsUtilService.getAttractions();
         //Assert
@@ -54,7 +54,7 @@ public class GpsUtilServiceTest {
     @Test
     void getAttractionsTest_withEmptyList() {
         //Arrange
-        when(gpsRepository.getAttractionList()).thenReturn(new ArrayList<Attraction>());
+        when(gpsUtilProxy.getAttractions()).thenReturn(new ArrayList<Attraction>());
         //Act
         List<Attraction> result = gpsUtilService.getAttractions();
         //Assert
@@ -65,7 +65,7 @@ public class GpsUtilServiceTest {
     void getUserLocationTest() {
         //Arrange
         UUID userId = UUID.randomUUID();
-        when(gpsRepository.getUserLocation(userId)).thenReturn(visitedLocation);
+        when(gpsUtilProxy.getUserLocation(userId)).thenReturn(visitedLocation);
         //Act
         VisitedLocation result = gpsUtilService.getUserLocation(userId);
         //ASSERT
