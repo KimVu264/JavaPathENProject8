@@ -1,6 +1,7 @@
 package tourGuide.repository;
 
 import common.model.User;
+import common.model.UserReward;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,12 @@ public class UserRepository {
         if (!internalUserMap.containsKey(user.getUserName())) {
             internalUserMap.put(user.getUserName(), user);
         }
+    }
+
+    public void addUserReward(String userName, UserReward userReward) {
+        User user = findByUserName(userName);
+        user.getUserRewards().add(userReward);
+        internalUserMap.put(userName, user);
     }
 
     public void deleteAll() {

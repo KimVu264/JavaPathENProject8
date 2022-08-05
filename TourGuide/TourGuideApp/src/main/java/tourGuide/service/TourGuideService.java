@@ -47,6 +47,7 @@ public class TourGuideService {
     }
 
     public List<UserReward> getUserRewards(User user) {
+        logger.info("Reward list for user: {}",user);
         return user.getUserRewards();
     }
 

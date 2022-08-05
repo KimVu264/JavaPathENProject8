@@ -1,8 +1,6 @@
 package tourGuide.helper;
 
-import common.model.Location;
-import common.model.User;
-import common.model.VisitedLocation;
+import common.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,8 @@ public class InternalTestingData {
             String email = userName + "@tourGuide.com";
             User user = new User(UUID.randomUUID(), userName, phone, email);
             generateUserLocationHistory(user);
+            UserReward userReward = new UserReward(user.getLastVisitedLocation(), new Attraction("LalaLand","Miami","Florida", UUID.randomUUID()),100);
+            user.getUserRewards().add(userReward);
             userRepository.saveUser(user);
             //internalUserMap.put(userName, user);
 

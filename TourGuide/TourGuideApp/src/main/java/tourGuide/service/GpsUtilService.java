@@ -14,12 +14,9 @@ import java.util.UUID;
 @Service
 public class GpsUtilService {
     private final Logger logger = LoggerFactory.getLogger(TourGuideService.class);
-    private final GpsRepository gpsRepository;
 
     @Autowired
-    public GpsUtilService(GpsRepository gpsRepository) {
-        this.gpsRepository = gpsRepository;
-    }
+    private GpsRepository gpsRepository;
 
     public List<Attraction> getAttractions() {
         //logger.debug("getting attractions ");

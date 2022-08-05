@@ -5,13 +5,12 @@ import common.dto.NearByAttractionsDto;
 import common.dto.UserLocationDto;
 import common.model.Provider;
 import common.model.User;
+import common.model.UserReward;
 import common.model.VisitedLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tourGuide.service.TourGuideService;
 
 import java.util.List;
@@ -57,9 +56,10 @@ public class TourGuideController {
     }
 
     @RequestMapping("/getRewards")
-    public String getRewards(@RequestParam String userName) {
-        logger.info("Get rewards with user: {}", userName);
-        return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
+    public List<UserReward> getUserRewards(@RequestParam String userName) {
+        logger.info("Get user rewards with userName: {}",userName);
+        User user = getUser(userName);
+        return tourGuideService.getUserRewards(user);
     }
 
     //  Get a list of every user's most recent location as JSON

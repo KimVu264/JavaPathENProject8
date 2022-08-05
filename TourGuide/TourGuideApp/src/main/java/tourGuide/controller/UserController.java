@@ -5,6 +5,7 @@ import common.dto.UserPreferencesDto;
 import common.model.Provider;
 import common.model.User;
 import common.model.UserPreferences;
+import common.model.UserReward;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body("user saved successfully !!");
     }
 
-    @PutMapping("/tripDeals")
-    public ResponseEntity<String> updateTripDeals(@RequestParam String userName, @RequestBody List<Provider> tripDeals){
-        userService.updateTripDeals(userName, tripDeals);
-        return ResponseEntity.status(HttpStatus.OK).body("tripDeals saved successfully !!");
+    @PostMapping("/addRewards")
+    public void addUserRewards( @RequestParam String userName, @RequestBody UserReward userReward) {
+        logger.info("Get user rewards with userName: {}",userName);
+        userService.addUserReward(userName,userReward);
     }
+
 }

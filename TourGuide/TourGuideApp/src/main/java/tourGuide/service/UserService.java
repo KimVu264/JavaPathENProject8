@@ -3,11 +3,8 @@ package tourGuide.service;
 import common.dto.UserDto;
 import common.dto.UserLocationDto;
 import common.dto.UserPreferencesDto;
-import common.model.Provider;
-import common.model.User;
-import common.model.UserPreferences;
+import common.model.*;
 
-import common.model.VisitedLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,10 @@ public class UserService {
         userRepository.saveUser(new User(UUID.randomUUID(), userDto.getUserName(), userDto.getPhoneNumber(), userDto.getEmailAddress()));
     }
 
+    public void addUserReward(String userName, UserReward userReward) {
+        userRepository.addUserReward(userName,userReward);
+    }
+
     public List<UserLocationDto> getAllCurrentLocations() {
         List<UserLocationDto> userLocationsList = new ArrayList<>();
         for (User user : getAllUsers()) {
@@ -63,6 +64,7 @@ public class UserService {
         User user = getUser(userName);
         user.setUserPreferences(new UserPreferences(userPreferencesDto.getTripDuration(), userPreferencesDto.getTicketQuantity(), userPreferencesDto.getNumberOfAdults(), userPreferencesDto.getNumberOfChildren()));
     }
+
 
     public void updateTripDeals(String userName, List<Provider> tripDeals) {
         User user = getUser(userName);
