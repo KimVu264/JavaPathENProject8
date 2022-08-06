@@ -16,22 +16,19 @@ before_script:
   - export GRADLE_USER_HOME
 
 build:
-  stages:
-    build
-
-  script: gradle --build-cache assemble
-  cache:
+ stage:
+  build
+ script: gradle --build-cache assemble
+ cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
-
   artifacts:
     paths:
-      - ./GpsUtil/build/libs/*-1.0.jar
-      - ./RewardCentral/build/libs/*-1.0.jar
-      - ./TripPricer/build/libs/*-1.0.jar
-      - ./TourGuide/build/libs/*-1.0.jar
-      #- build
-      #- .gradle
+      - ./GpsUtil/build/libs/*.jar
+      - ./RewardCentral/build/libs/*.jar
+      - ./TripPricer/build/libs/*.jar
+      - ./TourGuideApp/build/libs/*.jar
+
 test:
   stage: test
   script: gradle check
@@ -48,11 +45,11 @@ test:
     script:
       - docker-compose up -d
       - ./gradlew test
-  jar:
-    stage: jar
-    script:
-      - chmod +x ./gradlew
-      - ./gradlew bootJar assemble
-    artifacts:
-      paths:
-        - ./build/libs/*-1.0.jar
+jar:
+  stage: jar
+  script:
+    - chmod +x ./gradlew
+    - ./gradlew bootJar assemble
+  artifacts:
+    paths:
+      - ./build/libs/*.jar
