@@ -4,8 +4,8 @@ FROM openjdk:11
 # Copy the jar package into the container
 ADD build/libs/RewardCentral.jar reward.jar
 
-# Expose port 8083
-EXPOSE 8083
+# Expose port 8082
+EXPOSE 8082
 
 # Run the jar packagereward
 #CMD java -jar rewardCentral.jar

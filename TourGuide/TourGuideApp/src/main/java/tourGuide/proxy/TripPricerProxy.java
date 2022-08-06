@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
-//@FeignClient(name = "microservice-tripPricer", url = "${tourguide.microservice-tripPrice}")
-@FeignClient(name = "microservice-tripPricer", url = "localhost:8082")
+@FeignClient(name = "microservice-tripPricer", url = "${tourguide.microservice-tripPrice}")
+//@FeignClient(name = "microservice-tripPricer", url = "localhost:8083")
 public interface TripPricerProxy {
 
     @GetMapping("tripDeals")

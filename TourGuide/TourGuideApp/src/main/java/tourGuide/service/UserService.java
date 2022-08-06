@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        logger.info("Get all internalUserMap users");
+        //logger.info("Get all internalUserMap users");
         return userRepository.findAllUsers();
     }
     public User getUser(String userName) {

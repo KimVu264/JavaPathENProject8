@@ -45,9 +45,9 @@ services:
           - microservice-tripPricer
     #set environment variables
     environment:
-     GPS_URL: gpsutil:9000
-     REWARDS-URL: rewardcentral:8083
-     PRICER-URL: trippricer:8082
+     GPS_URL: gpsutil:8081
+     REWARDS-URL: rewardcentral:8082
+     PRICER-URL: trippricer:8083
 
 networks:
   tourguide:

@@ -16,11 +16,12 @@ import java.util.stream.Collectors;
 @Service
 public class TrackerService extends Thread {
 
-    private static final long trackingPollingInterval = TimeUnit.MINUTES.toSeconds(5);
-    private final ExecutorService executorService = Executors.newFixedThreadPool(100);
-    private final TourGuideService tourGuideService;
     private Logger logger = LoggerFactory.getLogger(TrackerService.class);
+    private static final long trackingPollingInterval = TimeUnit.MINUTES.toSeconds(5);
+    private final TourGuideService tourGuideService;
     private boolean stop = false;
+
+    private final ExecutorService executorService = Executors.newFixedThreadPool(100);
 
     public TrackerService(TourGuideService tourGuideService) {
         this.tourGuideService = tourGuideService;

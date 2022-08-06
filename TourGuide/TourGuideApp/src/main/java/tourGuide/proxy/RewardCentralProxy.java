@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-//@FeignClient(value="microservice-rewardCentral", url="${tourguide.microservice-rewardsCentral}")
-@FeignClient(value="microservice-rewardCentral", url="localhost:8083")
+@FeignClient(value="microservice-rewardCentral", url="${tourguide.microservice-rewardsCentral}")
+//@FeignClient(value="microservice-rewardCentral", url="localhost:8082")
 public interface RewardCentralProxy {
 
     @GetMapping("/rewardPoints")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tourGuide.proxy.RewardCentralProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -29,9 +30,9 @@ public class RewardsService {
     private Logger logger = LoggerFactory.getLogger(RewardsService.class);
 
     // proximity in miles
-    private int defaultProximityBuffer = 100;
+    private int defaultProximityBuffer = 10;
     private int proximityBuffer = defaultProximityBuffer;
-    private int attractionProximityRange = 9000;
+    private int attractionProximityRange = 200;
 
     public RewardsService(GpsUtilService gpsUtilService, RewardCentralProxy rewardCentralProxy) {
         this.gpsUtilService = gpsUtilService;
@@ -46,33 +47,35 @@ public class RewardsService {
         this.defaultProximityBuffer =  proximityBuffer;
     }
 
-    /*
-    public CompletableFuture<List<UserRewardDto>> calculateRewards(User user) {
+/*
+    public CompletableFuture<List<UserReward>> calculateRewards(User user) {
 
         //CopyOnWriteArrayList<VisitedLocation> userLocations = new CopyOnWriteArrayList<>();
         // CopyOnWriteArrayList<Attraction> attractions = new CopyOnWriteArrayList<>();
         // userLocations.addAll(user.getVisitedLocations());
         //attractions.addAll(gpsUtil.getAttractions());
         List<VisitedLocation> userLocations = user.getVisitedLocations();
-        List<Attraction> attractions = gpsUtil.getAttractions();
-        //List<UserRewardDto> userRewardDtos = user.getUserRewards();
+        List<Attraction> attractions = gpsUtilService.getAttractions();
+        List<UserReward> userRewards = user.getUserRewards();
         return CompletableFuture.supplyAsync(() -> {
             userLocations.forEach(
                     visitedLocation -> {
-                        List<UserRewardDto> userRewardDtos = new ArrayList<>();
-                        attractions.stream().filter(a -> nearAttraction(visitedLocation, a)).forEach(a -> {
+                        //List<UserReward> userRewards = new ArrayList<>();
+                        attractions.stream().filter(a -> nearAttraction(visitedLocation.location, a)).forEach(a -> {
 
-                                    if (user.getUserRewards().stream().noneMatch(r -> r.getAttraction().attractionName.equals(a.attractionName))) {
+                                    if (user.getUserRewards().stream().noneMatch(r -> r.getAttraction().getAttractionName().equals(a.getAttractionName()))) {
                                         //user.getUserRewards().add(new UserRewardDto(visitedLocation, a, getRewardPoints(a, user)));
-                                        userRewardDtos.add(new UserRewardDto(visitedLocation, a, getRewardPoints(a, user)));
+                                        userRewards.add(new UserReward(visitedLocation, a, getRewardPoints(a.getAttractionId(), user.getUserId())));
                                     }
                                 });
-                                user.getUserRewards().addAll(userRewardDtos);
+                                user.getUserRewards().addAll(userRewards);
                     });
             return user.getUserRewards();
-        }, gpsUtil.service);
+        }, service);
     }
-    */
+
+ */
+
     public CompletableFuture<List<UserReward>> calculateRewards(User user) {
 
         List<Attraction> attractions = gpsUtilService.getAttractions();
